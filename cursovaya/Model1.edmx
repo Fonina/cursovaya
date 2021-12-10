@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище kursovayaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="author">
+          <Key>
+            <PropertyRef Name="ID_author" />
+          </Key>
+          <Property Name="ID_author" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="patronymic" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="ID_country" />
+          </Key>
+          <Property Name="ID_country" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dish">
+          <Key>
+            <PropertyRef Name="ID_dish" />
+          </Key>
+          <Property Name="ID_dish" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="time" Type="time" Precision="7" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ID_author" Type="int" Nullable="false" />
+          <Property Name="ID_country" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dish_ingredients">
+          <Key>
+            <PropertyRef Name="ID_dish_ingredients" />
+          </Key>
+          <Property Name="ID_dish_ingredients" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_dish" Type="int" Nullable="false" />
+          <Property Name="ID_ingredients" Type="int" Nullable="false" />
+          <Property Name="gram" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dish_type">
+          <Key>
+            <PropertyRef Name="ID_dish_type" />
+          </Key>
+          <Property Name="ID_dish_type" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_dish" Type="int" Nullable="false" />
+          <Property Name="ID_type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ingredients">
+          <Key>
+            <PropertyRef Name="ID_ingredients" />
+          </Key>
+          <Property Name="ID_ingredients" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="type_dishes">
+          <Key>
+            <PropertyRef Name="ID_type" />
+          </Key>
+          <Property Name="ID_type" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__dish__ID_author__286302EC">
+          <End Role="author" Type="Self.author" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish" Type="Self.dish" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="author">
+              <PropertyRef Name="ID_author" />
+            </Principal>
+            <Dependent Role="dish">
+              <PropertyRef Name="ID_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish__ID_country__29572725">
+          <End Role="country" Type="Self.country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish" Type="Self.dish" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="ID_country" />
+            </Principal>
+            <Dependent Role="dish">
+              <PropertyRef Name="ID_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_ingr__ID_di__2E1BDC42">
+          <End Role="dish" Type="Self.dish" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_ingredients" Type="Self.dish_ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dish">
+              <PropertyRef Name="ID_dish" />
+            </Principal>
+            <Dependent Role="dish_ingredients">
+              <PropertyRef Name="ID_dish" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_ingr__ID_in__2F10007B">
+          <End Role="ingredients" Type="Self.ingredients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_ingredients" Type="Self.dish_ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingredients">
+              <PropertyRef Name="ID_ingredients" />
+            </Principal>
+            <Dependent Role="dish_ingredients">
+              <PropertyRef Name="ID_ingredients" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_type__ID_di__33D4B598">
+          <End Role="dish" Type="Self.dish" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_type" Type="Self.dish_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dish">
+              <PropertyRef Name="ID_dish" />
+            </Principal>
+            <Dependent Role="dish_type">
+              <PropertyRef Name="ID_dish" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_type__ID_ty__34C8D9D1">
+          <End Role="type_dishes" Type="Self.type_dishes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_type" Type="Self.dish_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_dishes">
+              <PropertyRef Name="ID_type" />
+            </Principal>
+            <Dependent Role="dish_type">
+              <PropertyRef Name="ID_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище kursovayaModelContainer">
+          <EntitySet Name="author" EntityType="Self.author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="country" EntityType="Self.country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dish" EntityType="Self.dish" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dish_ingredients" EntityType="Self.dish_ingredients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dish_type" EntityType="Self.dish_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ingredients" EntityType="Self.ingredients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="type_dishes" EntityType="Self.type_dishes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__dish__ID_author__286302EC" Association="Self.FK__dish__ID_author__286302EC">
+            <End Role="author" EntitySet="author" />
+            <End Role="dish" EntitySet="dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish__ID_country__29572725" Association="Self.FK__dish__ID_country__29572725">
+            <End Role="country" EntitySet="country" />
+            <End Role="dish" EntitySet="dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_ingr__ID_di__2E1BDC42" Association="Self.FK__dish_ingr__ID_di__2E1BDC42">
+            <End Role="dish" EntitySet="dish" />
+            <End Role="dish_ingredients" EntitySet="dish_ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_ingr__ID_in__2F10007B" Association="Self.FK__dish_ingr__ID_in__2F10007B">
+            <End Role="ingredients" EntitySet="ingredients" />
+            <End Role="dish_ingredients" EntitySet="dish_ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_type__ID_di__33D4B598" Association="Self.FK__dish_type__ID_di__33D4B598">
+            <End Role="dish" EntitySet="dish" />
+            <End Role="dish_type" EntitySet="dish_type" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_type__ID_ty__34C8D9D1" Association="Self.FK__dish_type__ID_ty__34C8D9D1">
+            <End Role="type_dishes" EntitySet="type_dishes" />
+            <End Role="dish_type" EntitySet="dish_type" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="kursovayaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="author">
+          <Key>
+            <PropertyRef Name="ID_author" />
+          </Key>
+          <Property Name="ID_author" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dish" Relationship="Self.FK__dish__ID_author__286302EC" FromRole="author" ToRole="dish" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="ID_country" />
+          </Key>
+          <Property Name="ID_country" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="dish" Relationship="Self.FK__dish__ID_country__29572725" FromRole="country" ToRole="dish" />
+        </EntityType>
+        <EntityType Name="dish">
+          <Key>
+            <PropertyRef Name="ID_dish" />
+          </Key>
+          <Property Name="ID_dish" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="time" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_author" Type="Int32" Nullable="false" />
+          <Property Name="ID_country" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="author" Relationship="Self.FK__dish__ID_author__286302EC" FromRole="dish" ToRole="author" />
+          <NavigationProperty Name="country" Relationship="Self.FK__dish__ID_country__29572725" FromRole="dish" ToRole="country" />
+          <NavigationProperty Name="dish_ingredients" Relationship="Self.FK__dish_ingr__ID_di__2E1BDC42" FromRole="dish" ToRole="dish_ingredients" />
+          <NavigationProperty Name="dish_type" Relationship="Self.FK__dish_type__ID_di__33D4B598" FromRole="dish" ToRole="dish_type" />
+        </EntityType>
+        <EntityType Name="dish_ingredients">
+          <Key>
+            <PropertyRef Name="ID_dish_ingredients" />
+          </Key>
+          <Property Name="ID_dish_ingredients" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_dish" Type="Int32" Nullable="false" />
+          <Property Name="ID_ingredients" Type="Int32" Nullable="false" />
+          <Property Name="gram" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="dish" Relationship="Self.FK__dish_ingr__ID_di__2E1BDC42" FromRole="dish_ingredients" ToRole="dish" />
+          <NavigationProperty Name="ingredients" Relationship="Self.FK__dish_ingr__ID_in__2F10007B" FromRole="dish_ingredients" ToRole="ingredients" />
+        </EntityType>
+        <EntityType Name="dish_type">
+          <Key>
+            <PropertyRef Name="ID_dish_type" />
+          </Key>
+          <Property Name="ID_dish_type" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_dish" Type="Int32" Nullable="false" />
+          <Property Name="ID_type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="dish" Relationship="Self.FK__dish_type__ID_di__33D4B598" FromRole="dish_type" ToRole="dish" />
+          <NavigationProperty Name="type_dishes" Relationship="Self.FK__dish_type__ID_ty__34C8D9D1" FromRole="dish_type" ToRole="type_dishes" />
+        </EntityType>
+        <EntityType Name="ingredients">
+          <Key>
+            <PropertyRef Name="ID_ingredients" />
+          </Key>
+          <Property Name="ID_ingredients" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="dish_ingredients" Relationship="Self.FK__dish_ingr__ID_in__2F10007B" FromRole="ingredients" ToRole="dish_ingredients" />
+        </EntityType>
+        <EntityType Name="type_dishes">
+          <Key>
+            <PropertyRef Name="ID_type" />
+          </Key>
+          <Property Name="ID_type" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="dish_type" Relationship="Self.FK__dish_type__ID_ty__34C8D9D1" FromRole="type_dishes" ToRole="dish_type" />
+        </EntityType>
+        <Association Name="FK__dish__ID_author__286302EC">
+          <End Role="author" Type="Self.author" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish" Type="Self.dish" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="author">
+              <PropertyRef Name="ID_author" />
+            </Principal>
+            <Dependent Role="dish">
+              <PropertyRef Name="ID_author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish__ID_country__29572725">
+          <End Role="country" Type="Self.country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish" Type="Self.dish" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="ID_country" />
+            </Principal>
+            <Dependent Role="dish">
+              <PropertyRef Name="ID_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_ingr__ID_di__2E1BDC42">
+          <End Role="dish" Type="Self.dish" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_ingredients" Type="Self.dish_ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dish">
+              <PropertyRef Name="ID_dish" />
+            </Principal>
+            <Dependent Role="dish_ingredients">
+              <PropertyRef Name="ID_dish" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_type__ID_di__33D4B598">
+          <End Role="dish" Type="Self.dish" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_type" Type="Self.dish_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dish">
+              <PropertyRef Name="ID_dish" />
+            </Principal>
+            <Dependent Role="dish_type">
+              <PropertyRef Name="ID_dish" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_ingr__ID_in__2F10007B">
+          <End Role="ingredients" Type="Self.ingredients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_ingredients" Type="Self.dish_ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingredients">
+              <PropertyRef Name="ID_ingredients" />
+            </Principal>
+            <Dependent Role="dish_ingredients">
+              <PropertyRef Name="ID_ingredients" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__dish_type__ID_ty__34C8D9D1">
+          <End Role="type_dishes" Type="Self.type_dishes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="dish_type" Type="Self.dish_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type_dishes">
+              <PropertyRef Name="ID_type" />
+            </Principal>
+            <Dependent Role="dish_type">
+              <PropertyRef Name="ID_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="kursovayaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="author" EntityType="Self.author" />
+          <EntitySet Name="country" EntityType="Self.country" />
+          <EntitySet Name="dish" EntityType="Self.dish" />
+          <EntitySet Name="dish_ingredients" EntityType="Self.dish_ingredients" />
+          <EntitySet Name="dish_type" EntityType="Self.dish_type" />
+          <EntitySet Name="ingredients" EntityType="Self.ingredients" />
+          <EntitySet Name="type_dishes" EntityType="Self.type_dishes" />
+          <AssociationSet Name="FK__dish__ID_author__286302EC" Association="Self.FK__dish__ID_author__286302EC">
+            <End Role="author" EntitySet="author" />
+            <End Role="dish" EntitySet="dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish__ID_country__29572725" Association="Self.FK__dish__ID_country__29572725">
+            <End Role="country" EntitySet="country" />
+            <End Role="dish" EntitySet="dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_ingr__ID_di__2E1BDC42" Association="Self.FK__dish_ingr__ID_di__2E1BDC42">
+            <End Role="dish" EntitySet="dish" />
+            <End Role="dish_ingredients" EntitySet="dish_ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_type__ID_di__33D4B598" Association="Self.FK__dish_type__ID_di__33D4B598">
+            <End Role="dish" EntitySet="dish" />
+            <End Role="dish_type" EntitySet="dish_type" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_ingr__ID_in__2F10007B" Association="Self.FK__dish_ingr__ID_in__2F10007B">
+            <End Role="ingredients" EntitySet="ingredients" />
+            <End Role="dish_ingredients" EntitySet="dish_ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__dish_type__ID_ty__34C8D9D1" Association="Self.FK__dish_type__ID_ty__34C8D9D1">
+            <End Role="type_dishes" EntitySet="type_dishes" />
+            <End Role="dish_type" EntitySet="dish_type" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище kursovayaModelContainer" CdmEntityContainer="kursovayaEntities">
+          <EntitySetMapping Name="author">
+            <EntityTypeMapping TypeName="kursovayaModel.author">
+              <MappingFragment StoreEntitySet="author">
+                <ScalarProperty Name="ID_author" ColumnName="ID_author" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="country">
+            <EntityTypeMapping TypeName="kursovayaModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="ID_country" ColumnName="ID_country" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dish">
+            <EntityTypeMapping TypeName="kursovayaModel.dish">
+              <MappingFragment StoreEntitySet="dish">
+                <ScalarProperty Name="ID_dish" ColumnName="ID_dish" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="ID_author" ColumnName="ID_author" />
+                <ScalarProperty Name="ID_country" ColumnName="ID_country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dish_ingredients">
+            <EntityTypeMapping TypeName="kursovayaModel.dish_ingredients">
+              <MappingFragment StoreEntitySet="dish_ingredients">
+                <ScalarProperty Name="ID_dish_ingredients" ColumnName="ID_dish_ingredients" />
+                <ScalarProperty Name="ID_dish" ColumnName="ID_dish" />
+                <ScalarProperty Name="ID_ingredients" ColumnName="ID_ingredients" />
+                <ScalarProperty Name="gram" ColumnName="gram" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dish_type">
+            <EntityTypeMapping TypeName="kursovayaModel.dish_type">
+              <MappingFragment StoreEntitySet="dish_type">
+                <ScalarProperty Name="ID_dish_type" ColumnName="ID_dish_type" />
+                <ScalarProperty Name="ID_dish" ColumnName="ID_dish" />
+                <ScalarProperty Name="ID_type" ColumnName="ID_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ingredients">
+            <EntityTypeMapping TypeName="kursovayaModel.ingredients">
+              <MappingFragment StoreEntitySet="ingredients">
+                <ScalarProperty Name="ID_ingredients" ColumnName="ID_ingredients" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type_dishes">
+            <EntityTypeMapping TypeName="kursovayaModel.type_dishes">
+              <MappingFragment StoreEntitySet="type_dishes">
+                <ScalarProperty Name="ID_type" ColumnName="ID_type" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
